@@ -1,0 +1,18 @@
+Accessibility Report for https://www.google.com
+============================================================
+
+ Page title found: 'Google'
+
+ Document language declared: lang='en'.
+
+ All 1 images have alt text.
+
+ No headings (h1–h6) found.
+
+ All links have meaningful text.
+
+ 3/3 form controls lack labels:
+  - Unlabeled control: q
+  - Unlabeled control: btnG
+  - Unlabeled control: btnI
+
