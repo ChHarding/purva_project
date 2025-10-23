@@ -1,18 +1,20 @@
-Accessibility Report for https://www.google.com
+Accessibility Report for https://www.linkedin.com
 ============================================================
 
- Page title found: 'Google'
+ Page title found: 'LinkedIn: Log In or Sign Up'
 
  Document language declared: lang='en'.
 
- All 1 images have alt text.
+ 5/7 images missing alt text:
+  - Missing alt: No src (line 1209)
+  - Missing alt: No src (line 1222)
+  - Missing alt: No src (line 1235)
+  - Missing alt: No src (line 1270)
+  - Missing alt: No src (line 1296)
 
- No headings (h1–h6) found.
+ Headings present and appear sequential.
 
  All links have meaningful text.
 
- 3/3 form controls lack labels:
-  - Unlabeled control: q
-  - Unlabeled control: btnG
-  - Unlabeled control: btnI
+ℹ No form fields found.
 
