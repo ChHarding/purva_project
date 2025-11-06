@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 app = Flask(__name__)
 
-# --- Accessibility Check Functions ---
+#  Accessibility Check Functions 
 
 def check_img_alt(soup):
     """Check if all images have alt attributes."""
@@ -71,7 +71,7 @@ def run_accessibility_checks(url):
     except requests.exceptions.RequestException as e:
         return [{"check": "Connection error", "result": "Error", "details": str(e)}]
 
-# --- Flask Routes ---
+#  Flask Routes 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -89,6 +89,6 @@ def index():
 
     return render_template('index.html', results=results, error=error_message)
 
-# --- Run Flask App ---
+#  Run Flask App 
 if __name__ == '__main__':
     app.run(debug=True)
