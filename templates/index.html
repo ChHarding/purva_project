@@ -1,53 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AccessCheck – Version 2A</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#f7f8fa; margin:0; padding:2em; text-align:center; }
-    h1 { color:#333; }
-    form { margin-bottom:2em; }
-    input[type=text] {
-      padding:10px; width:60%; border:1px solid #ccc; border-radius:8px; font-size:1em;
-    }
-    button {
-      padding:10px 20px; margin-left:10px; border:none; background:#4CAF50;
-      color:white; font-size:1em; border-radius:8px; cursor:pointer;
-    }
-    .card {
-      background:white; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1);
-      margin:1em auto; padding:1em; width:60%; text-align:left;
-    }
-    .status-pass { border-left:10px solid #4CAF50; }
-    .status-fail { border-left:10px solid #f44336; }
-    .status-error { border-left:10px solid #ff9800; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessCheck</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Inter', sans-serif;
+        }
+        .header-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2b2d42;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0px 5px 20px rgba(0,0,0,0.08);
+        }
+        .result-label {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .badge-pass {
+            background-color: #4CAF50 !important;
+        }
+        .badge-fail {
+            background-color: #FF4C4C !important;
+        }
+        .badge-error {
+            background-color: #FFB200 !important;
+        }
+    </style>
 </head>
+
 <body>
 
-  <h1>AccessCheck – Accessibility Analyzer</h1>
-  <form method="POST">
-    <input type="text" name="url" placeholder="Enter website URL (include http/https)">
-    <button type="submit">Check Accessibility</button>
-  </form>
+<div class="container">
 
-  {% if error %}
-    <div class="card status-error"><strong>Error:</strong> {{ error }}</div>
-  {% endif %}
+    <h1 class="header-title">AccessCheck</h1>
 
-  {% if results %}
-    {% for r in results %}
-      <div class="card 
-        {% if r.result == 'Pass' %}status-pass
-        {% elif r.result == 'Fail' %}status-fail
-        {% else %}status-error{% endif %}">
-        <h3>{{ r.check }}</h3>
-        <p><strong>Status:</strong> {{ r.result }}</p>
-        <p>{{ r.details }}</p>
-      </div>
-    {% endfor %}
-  {% endif %}
+    <!-- URL Form -->
+    <div class="d-flex justify-content-center mb-4">
+        <form method="POST" class="d-flex w-75 gap-2">
+            <input type="text" name="url" class="form-control form-control-lg" 
+                   value="{{ request.form.url }}"
+                   placeholder="Enter website URL...">
+            <button class="btn btn-primary btn-lg" type="submit">Analyze</button>
+        </form>
+    </div>
+
+    <!-- Error Message -->
+    {% if error %}
+    <div class="alert alert-danger text-center w-75 mx-auto">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <!-- Results -->
+    {% if results %}
+    <div class="card w-75 mx-auto p-4">
+
+        <h3 class="mb-3">Accessibility Results</h3>
+
+        {% for item in results %}
+        <div class="p-3 border rounded mb-3">
+
+            <span class="result-label">{{ item.check }}:</span>
+
+            {% if item.result == "Pass" %}
+                <span class="badge badge-pass ms-2">PASS</span>
+
+            {% elif item.result == "Fail" %}
+                <span class="badge badge-fail ms-2">FAIL</span>
+
+            {% else %}
+                <span class="badge badge-error ms-2">ERROR</span>
+            {% endif %}
+
+            <p class="mt-2 mb-0">{{ item.details }}</p>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endif %}
+
+</div>
 
 </body>
 </html>

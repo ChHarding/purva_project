@@ -1,5 +1,3 @@
-
-
 from flask import Flask, render_template, request
 import requests
 from bs4 import BeautifulSoup
@@ -10,7 +8,6 @@ app = Flask(__name__)
 #  Accessibility Check Functions 
 
 def check_img_alt(soup):
-    """Check if all images have alt attributes."""
     images = soup.find_all('img')
     missing_alt = [img for img in images if not img.get('alt')]
     return {
@@ -20,7 +17,6 @@ def check_img_alt(soup):
     }
 
 def check_form_labels(soup):
-    """Check if input elements have associated labels."""
     inputs = soup.find_all('input')
     missing_label = []
     for i in inputs:
@@ -35,7 +31,6 @@ def check_form_labels(soup):
     }
 
 def check_headings(soup):
-    """Check heading structure."""
     headings = [h.name for h in soup.find_all(['h1','h2','h3','h4','h5','h6'])]
     return {
         "check": "Headings present",
@@ -44,7 +39,6 @@ def check_headings(soup):
     }
 
 def check_links(soup):
-    """Check for meaningful link text."""
     links = soup.find_all('a')
     bad_links = [a for a in links if not a.get_text(strip=True)]
     return {
@@ -54,7 +48,6 @@ def check_links(soup):
     }
 
 def run_accessibility_checks(url):
-    """Fetch the page and run all accessibility checks."""
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
@@ -71,24 +64,30 @@ def run_accessibility_checks(url):
     except requests.exceptions.RequestException as e:
         return [{"check": "Connection error", "result": "Error", "details": str(e)}]
 
+
 #  Flask Routes 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     results = None
     error_message = None
+    url = ""  # keep URL visible
 
     if request.method == 'POST':
-        url = request.form.get('url')
+        url = request.form.get('url', "").strip()
+
+        # AUTO-FIX MISSING HTTP/HTTPS
+        if url and not url.startswith(("http://", "https://")):
+            url = "https://" + url
+
         if not url:
             error_message = "Please enter a valid URL."
-        elif not urlparse(url).scheme:
-            error_message = "URL must include http:// or https://"
         else:
             results = run_accessibility_checks(url)
 
-    return render_template('index.html', results=results, error=error_message)
+    return render_template('index.html', results=results, error=error_message, url=url)
 
-#  Run Flask App 
+
+# Run Flask App
 if __name__ == '__main__':
     app.run(debug=True)
