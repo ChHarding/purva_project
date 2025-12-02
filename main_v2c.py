@@ -6,9 +6,7 @@ import re
 
 app = Flask(__name__)
 
-# -------------------------------------------------------
-# ADD LINE NUMBERS TO HTML (Version 1B logic)
-# -------------------------------------------------------
+
 def add_line_numbers_to_html(html: str) -> str:
     """Add data-line attributes to HTML tags for reporting."""
     lines = html.splitlines()
@@ -103,9 +101,7 @@ def check_links(soup):
             "details": "Links missing text on lines: " + ", ".join(missing)}
 
 
-# -------------------------------------------------------
-# RUN ACCESSIBILITY CHECKS
-# -------------------------------------------------------
+
 def run_accessibility_checks(url):
     try:
         response = requests.get(url, timeout=10, headers={
@@ -127,9 +123,7 @@ def run_accessibility_checks(url):
         return [{"check": "Error", "result": "Fail", "details": str(e)}]
 
 
-# -------------------------------------------------------
-# FLASK ROUTE WITH URL USABILITY FIXES (Professor Request)
-# -------------------------------------------------------
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     results = None
@@ -167,7 +161,7 @@ def index():
 
                     fallback_url = "http://" + entered_url.replace("https://", "").replace("http://", "")
                     results = run_accessibility_checks(fallback_url)
-                    url = fallback_url  # update visible URL
+                    url = fallback_url  
 
     return render_template("index.html", results=results, error=error_message, url=url)
 
